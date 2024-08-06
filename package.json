@@ -5,10 +5,7 @@
   "author": "Claes Melvyn",
   "keywords": [],
   "license": "ISC",
-  "directories": {
-    "lib": "dist"
-  },
-  "main": "dist/index.js",
+  "main": "index.js",
   "scripts": {
     "build": "npx tsc",
     "prepare": "npm run build",
