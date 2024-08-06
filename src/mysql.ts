@@ -38,14 +38,14 @@ class MySQL {
     async insert(table: string, data: any): Promise<any> {
         const columns = await this.getColumns(table);
         const query = ` INSERT INTO ${table} (${columns.join(',')}) 
-                        VALUES (${columns.map((column: string) => data[column]).join(',')})`;
+                        VALUES (${columns.map((column: string) => formatValue(data[column])).join(',')})`;
         return this.query(query);
     }
 
     async update(table: string, data: any): Promise<any> {
         const columns = await this.getColumns(table);
         const query = ` UPDATE ${table} 
-                        SET ${columns.map((column: string) => `${column} = ${data[column]}`).join(',')} 
+                        SET ${columns.map((column: string) => `${column} = ${formatValue(data[column])}`).join(',')}
                         WHERE id = ${data.id}`;
     }
 
@@ -62,6 +62,20 @@ class MySQL {
     async selectAll(table: string): Promise<any> {
         const query = `SELECT * FROM ${table}`;
         return this.query(query);
+    }
+}
+
+function formatValue(value: any): string {
+    if (typeof value === 'string') {
+        return `'${value}'`;
+    } else if (typeof value === 'number') {
+        return value.toString();
+    } else if (typeof value === 'boolean') {
+        return value ? '1' : '0';
+    } else if (value instanceof Date) {
+        return value.toISOString();
+    } else {
+        return 'NULL';
     }
 }
 
