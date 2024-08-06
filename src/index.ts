@@ -2,9 +2,6 @@
 import MySQL from "./mysql";
 export { MySQL }
 
-import { checkAdmin } from "./adminUtils";
-export { checkAdmin }
-
 import BaseData from "./DataClass/BaseData";
 import Athlete from "./DataClass/Athlete";
 import Event from "./DataClass/Event";
@@ -13,3 +10,12 @@ import Competition from "./DataClass/Competition";
 import Competition_Event from "./DataClass/Competition_Event";
 
 export { BaseData, Athlete, Event, Category, Competition, Competition_Event }
+
+import { checkAdmin } from "./adminUtils";
+export { checkAdmin }
+
+import { getCategory } from "./getCategory";
+export { getCategory }
+
+import { getAll } from "./DataClass/DataUtils";
+export { getAll }
