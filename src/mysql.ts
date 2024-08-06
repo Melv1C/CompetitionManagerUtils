@@ -68,7 +68,7 @@ class MySQL {
 
 function formatValue(value: any): string {
     if (typeof value === 'string') {
-        return `'${value}'`;
+        return `'${value.replace(/'/g, "''")}'`;
     } else if (typeof value === 'number') {
         return value.toString();
     } else if (typeof value === 'boolean') {
