@@ -1,12 +1,12 @@
 import BaseData from "./BaseData";
 
 class Athlete extends BaseData {
-    ath_firstName: string = '';
-    ath_lastName: string = '';
-    ath_bib: number = 0;
-    ath_gender: string = '';
-    ath_birthDate: Date = new Date();
-    ath_club: string = '';
+    firstName: string = '';
+    lastName: string = '';
+    bib: number = 0;
+    gender: string = '';
+    birthDate: Date = new Date();
+    club: string = '';
 
     constructor() {
         super();

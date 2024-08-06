@@ -4,26 +4,25 @@ import MySQL from "../mysql";
 
 
 class Competition extends BaseData {
-    com_name: string = '';
-    com_ref_admin: string = '';
-    com_date: Date = new Date();
-    com_inscriptionEnd: Date = new Date();
-    com_location: string = '';
-    com_club: string = '';
-    com_freeForOrgClub: boolean = false;
-    com_linkSchedule: string = '';
-    com_contactEmail: string = '';
-    com_description: string = '';
-    com_open: boolean = false;
-    com_oneDayAthlete: boolean = false;
-    com_foreignAthlete: boolean = true;
-
-    com_events: Competition_Event[] = [];
+    name: string = '';
+    admin_id: string = '';
+    competitionDate: Date = new Date();
+    inscriptionEnd: Date = new Date();
+    location: string = '';
+    club: string = '';
+    freeForOrgClub: boolean = false;
+    linkSchedule: string = '';
+    contactEmail: string = '';
+    description: string = '';
+    open: boolean = false;
+    oneDayAthlete: boolean = false;
+    foreignAthlete: boolean = true;
+    events: Competition_Event[] = [];
     
     constructor(name?: string) {
         super();
         this.table = 'competitions';
-        this.com_name = name || '';
+        this.name = name || '';
     }
 
     async load(mysql: MySQL, id: number, loadEvents: boolean = false): Promise<any> {
@@ -37,10 +36,10 @@ class Competition extends BaseData {
 
     async loadEvents(mysql: MySQL): Promise<any> {
         const SQL =     `SELECT * FROM events e
-                        LEFT JOIN competition_events ce ON e.id = com_eve_ref_event
-                        WHERE com_eve_ref_competition = ?`;
-        const results = await mysql.query(SQL, [this.id]);
-        this.com_events = results.map((result: any) => {
+                        LEFT JOIN competition_events ce ON e.id = ce.event_id
+                        WHERE ce.competition_id = ${this.id}`;
+        const results = await mysql.query(SQL);
+        this.events = results.map((result: any) => {
             const competition_event = new Competition_Event();
             competition_event.fromJSON(result);
             return competition_event;
@@ -49,18 +48,16 @@ class Competition extends BaseData {
 
     async save(mysql: MySQL): Promise<any> {
         const result = await super.save(mysql);
-        if (this.com_events.length > 0) {
+        if (this.events.length > 0) {
             await this.saveEvents(mysql);
         }
         return result;
     }
 
     async saveEvents(mysql: MySQL): Promise<any> {
-        const SQL = 'INSERT INTO competition_events (com_eve_ref_competition, com_eve_ref_event, com_eve_ref_category, com_eve_ref_parent_event) VALUES (?, ?, ?, ?)';
-        for (const competition_event of this.com_events) {
-            await mysql.query(SQL, [this.id, competition_event.com_eve_ref_event, competition_event.com_eve_ref_category, competition_event.com_eve_ref_parent_event]);
-        }
-        return true;
+        const query = ` INSERT INTO competition_events (competition_id, event_id, category_id, parentEvent_id)
+                        VALUES ${this.events.map((event: Competition_Event) => `(${this.id}, ${event.event_id}, ${event.category_id}, ${event.parentEvent_id})`).join(',')}`;
+        return mysql.query(query);
     }
 }
 
