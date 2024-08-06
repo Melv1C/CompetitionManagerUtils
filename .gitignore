@@ -1,7 +1,7 @@
 # Ignore node_modules directory
 node_modules/
 
-# Ignore built output
+# Ignore dist directory
 dist/
 
 # Ignore environment-specific files
@@ -15,7 +15,5 @@ dist/
 *.log
 *.tmp
 
-# Ignore build artifacts
-*.js
-*.js.map
-*.d.ts
+# Ignore package-lock.json
+package-lock.json
