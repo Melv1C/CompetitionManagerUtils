@@ -1,6 +1,7 @@
 import BaseData from "./BaseData";
 
 class Athlete extends BaseData {
+    license: string = '';
     firstName: string = '';
     lastName: string = '';
     bib: number = 0;
