@@ -1,7 +1,7 @@
 import BaseData from './BaseData';
 
 class Category extends BaseData {
-    abbr: string = '';
+    name: string = '';
     gender: string = '';
 
     constructor() {
