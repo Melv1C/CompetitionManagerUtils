@@ -32,7 +32,8 @@ class MySQL {
     async getColumns(table: string): Promise<string[]> {
         const query = `SHOW COLUMNS FROM ${table}`;
         const results = await this.query(query);
-        return results.map((result: any) => result.Field);
+        // omit the create_at and update_at columns
+        return results.map((result: any) => result.Field).filter((column: string) => !['create_at', 'update_at'].includes(column));
     }
 
     async insert(table: string, data: any): Promise<any> {
