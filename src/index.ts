@@ -21,3 +21,6 @@ export { getCategory }
 
 import { getAll, searchAll } from "./DataClass/DataUtils";
 export { getAll, searchAll }
+
+import Token, {generateToken} from "./Token";
+export { Token, generateToken }
