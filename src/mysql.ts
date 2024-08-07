@@ -56,22 +56,24 @@ class MySQL {
         return this.query(query);
     }
 
-    async select(table: string, id: number): Promise<any> {
+    async select(table: string, id: number): Promise<{ [key: string]: any }> {
         const query = `SELECT * FROM ${table} WHERE id = ${id}`;
-        return this.query(query);
+        const results = await this.query(query);
+        return results.length > 0 ? results[0] : null;
     }
 
-    async selectBy(table: string, field: string, value: any): Promise<any> {
+    async selectBy(table: string, field: string, value: any): Promise<{ [key: string]: any }> {
         const query = `SELECT * FROM ${table} WHERE ${field} = ${formatValue(value)}`;
-        return this.query(query);
+        const results = await this.query(query);
+        return results.length > 0 ? results[0] : null;
     }
 
-    async selectAll(table: string): Promise<any> {
+    async selectAll(table: string): Promise<{ [key: string]: any }[]> {
         const query = `SELECT * FROM ${table}`;
         return this.query(query);
     }
 
-    async search(table: string, fields: string[], keyword: string): Promise<any> {
+    async searchAll(table: string, fields: string[], keyword: string): Promise<{ [key: string]: any }[]> {
         const keys = keyword.split(' ').filter((key: string) => key.length > 0);
         const conditions = keys.map((key: string) => {
             return `(${fields.map((field: string) => `${field} LIKE ${formatValue(`%${key}%`)}`).join(' OR ')})`;
