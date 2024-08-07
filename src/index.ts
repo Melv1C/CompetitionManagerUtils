@@ -19,5 +19,5 @@ export { checkAdmin }
 import { getCategory } from "./getCategory";
 export { getCategory }
 
-import { getAll } from "./DataClass/DataUtils";
-export { getAll }
+import { getAll, searchAll } from "./DataClass/DataUtils";
+export { getAll, searchAll }
