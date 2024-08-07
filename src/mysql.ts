@@ -48,6 +48,7 @@ class MySQL {
         const query = ` UPDATE ${table} 
                         SET ${columns.map((column: string) => `${column} = ${formatValue(data[column])}`).join(',')}
                         WHERE id = ${data.id}`;
+        return this.query(query);
     }
 
     async delete(table: string, id: number): Promise<any> {
@@ -57,7 +58,12 @@ class MySQL {
 
     async select(table: string, id: number): Promise<any> {
         const query = `SELECT * FROM ${table} WHERE id = ${id}`;
-        const results = await this.query(query);
+        return this.query(query);
+    }
+
+    async selectBy(table: string, field: string, value: any): Promise<any> {
+        const query = `SELECT * FROM ${table} WHERE ${field} = ${formatValue(value)}`;
+        return this.query(query);
     }
 
     async selectAll(table: string): Promise<any> {

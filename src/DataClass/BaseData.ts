@@ -6,8 +6,8 @@ class BaseData {
     id: number = 0;
     create_by: string = '';
     create_at: number = 0;
-    update_by: string = '';
-    update_at: number = 0;
+    static update_by: string = '';
+    static update_at: number = 0;
 
     [key: string]: any; // Add index signature
 
@@ -43,6 +43,11 @@ class BaseData {
 
     async load(mysql: MySQL, id: number): Promise<any> {
         const json = await mysql.select(this.table, id);
+        this.fromJSON(json);
+    }
+
+    async loadBy(mysql: MySQL, field: string, value: any): Promise<any> {
+        const json = await mysql.selectBy(this.table, field, value);
         this.fromJSON(json);
     }
 
