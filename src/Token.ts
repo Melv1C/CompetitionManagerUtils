@@ -50,6 +50,10 @@ class Token {
     isValid(): boolean {
         return this.expire_at.getTime() > Date.now();
     }
+
+    isAdmin(): boolean {
+        return this.user === 'admin';
+    }
 }
 
 export default Token;
