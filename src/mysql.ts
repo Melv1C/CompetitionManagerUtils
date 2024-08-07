@@ -70,6 +70,15 @@ class MySQL {
         const query = `SELECT * FROM ${table}`;
         return this.query(query);
     }
+
+    async search(table: string, fields: string[], keyword: string): Promise<any> {
+        const keys = keyword.split(' ').filter((key: string) => key.length > 0);
+        const conditions = keys.map((key: string) => {
+            return `(${fields.map((field: string) => `${field} LIKE '%${key}%'`).join(' OR ')})`;
+        });
+        const query = `SELECT * FROM ${table} WHERE ${conditions.join(' AND ')}`;
+        return this.query(query);
+    }
 }
 
 function formatValue(value: any): string {
