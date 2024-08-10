@@ -79,10 +79,11 @@ class Result extends BaseData {
         this.club = this.athlete.club;
     }
 
-    addDetail(): void {
+    addDetail(): ResultDetail {
         const detail = new ResultDetail(this.id);
         detail.seqnum = this.details.length + 1;
         this.details.push(detail);
+        return detail;
     }
 
     calculatePoints(): void {
