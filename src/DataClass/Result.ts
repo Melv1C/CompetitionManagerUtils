@@ -36,7 +36,7 @@ class Result extends BaseData {
     }
 
     async loadDetails(): Promise<any> {
-        const SQL = `SELECT * FROM results_details WHERE result_id = ${this.id}`;
+        const SQL = `SELECT * FROM results_details WHERE result_id = ${this.id} ORDER BY seqnum`;
         const results = await MySQL.query(SQL);
         this.details = results.map((result: any) => {
             const detail = new ResultDetail();
@@ -71,10 +71,10 @@ class Result extends BaseData {
         this.club = athlete.club;
     }
 
-    setAthleteRef(athlete_ref: string): void {
+    async setAthleteRef(athlete_ref: string): Promise<void> {
         this.athlete_ref = athlete_ref;
         this.athlete = new Athlete();
-        this.athlete.loadBy('licence', athlete_ref);
+        await this.athlete.loadBy('licence', athlete_ref);
         this.bib = this.athlete.bib;
         this.club = this.athlete.club;
     }
@@ -93,6 +93,7 @@ class Result extends BaseData {
     computeResult(eventType: string): void {
         this.details.sort((a, b) => compareResult(eventType, a.value, b.value));
         this.details[0].best = true;
+        this.value = this.details[0].value;
         this.result = this.details[0].result;
         this.points = this.details[0].points;
         this.wind = this.details[0].wind;
@@ -100,7 +101,6 @@ class Result extends BaseData {
 
         this.details.sort((a, b) => a.seqnum - b.seqnum);
     }
-
 
 }
 

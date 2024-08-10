@@ -6,8 +6,8 @@ class BaseData {
     id: number = 0;
     create_by: string = '';
     create_at: number = 0;
-    static update_by: string = '';
-    static update_at: number = 0;
+    update_by: string = '';
+    update_at: number = 0;
 
     [key: string]: any; // Add index signature
 
