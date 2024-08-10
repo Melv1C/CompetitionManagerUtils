@@ -20,12 +20,12 @@ class Result extends BaseData {
 
     athlete: Athlete | null = null;
 
-    constructor(competition_id: number, competitionEvent_id: number, resultType: string) {
+    constructor(competition_id?: number, competitionEvent_id?: number, resultType?: string) {
         super();
         this.table = 'results';
-        this.competition_id = competition_id;
-        this.competitionEvent_id = competitionEvent_id;
-        this.resultType = resultType;
+        this.competition_id = competition_id || 0;
+        this.competitionEvent_id = competitionEvent_id || 0;
+        this.resultType = resultType || '';
     }
 
     async load(id: number): Promise<any> {
