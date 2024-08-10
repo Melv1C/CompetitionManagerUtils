@@ -66,7 +66,7 @@ class Result extends BaseData {
 
     setAthlete(athlete: Athlete): void {
         this.athlete = athlete;
-        this.athlete_ref = athlete.ref;
+        this.athlete_ref = athlete.licence;
         this.bib = athlete.bib;
         this.club = athlete.club;
     }
