@@ -121,3 +121,13 @@ class ResultDetail extends BaseData {
 }
 
 export { Result, ResultDetail };
+
+export async function getResults(competition_id: number, competitionEvent_id: number): Promise<Result[]> {
+    const SQL = `SELECT * FROM results WHERE competition_id = ${competition_id} AND competitionEvent_id = ${competitionEvent_id}`;
+    const results = await MySQL.query(SQL);
+    return results.map((result: any) => {
+        const r = new Result(competition_id, competitionEvent_id, result.resultType);
+        r.fromJSON(result);
+        return r;
+    });
+}
