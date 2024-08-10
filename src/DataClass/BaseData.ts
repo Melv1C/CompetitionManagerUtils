@@ -15,6 +15,8 @@ abstract class Serializable {
     fromJSON(json: { [key: string]: any }): void {
         Object.assign(this, json);
     }
+
+    
   }
 
 class BaseData extends Serializable {

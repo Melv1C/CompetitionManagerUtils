@@ -28,6 +28,21 @@ class Result extends BaseData {
         this.resultType = resultType || '';
     }
 
+    fromJSON(json: { [key: string]: any; }): void {
+        super.fromJSON(json);
+        if (json.athlete) {
+            this.athlete = new Athlete();
+            this.athlete.fromJSON(json.athlete);
+        }
+        if (json.details) {
+            this.details = json.details.map((detail: any) => {
+                const d = new ResultDetail();
+                d.fromJSON(detail);
+                return d;
+            });
+        }
+    }
+
     async load(id: number): Promise<any> {
         await super.load(id);
         this.athlete = new Athlete();
