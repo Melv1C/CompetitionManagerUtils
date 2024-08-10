@@ -27,6 +27,7 @@ class MySQL {
     static query(sql: string, values?: any): Promise<any> {
         return new Promise((resolve, reject) => {
             console.log('SQL:', sql);
+            console.log('Values:', values);
             this.connection.query(sql, values, (error, results) => {
                 if (error) {
                     reject(error);
