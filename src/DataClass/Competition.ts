@@ -26,9 +26,7 @@ class Competition extends BaseData {
     }
 
     async load(id: number, loadEvents: boolean = true): Promise<any> {
-        const json = await MySQL.select('competitions', id);
-        this.fromJSON(json);
-
+        await super.load(id);
         if (loadEvents) {
             await this.loadEvents();
         }
