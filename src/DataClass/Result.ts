@@ -80,7 +80,7 @@ class Result extends BaseData {
     }
 
     addDetail(): ResultDetail {
-        const detail = new ResultDetail(this.id);
+        const detail = new ResultDetail();
         detail.seqnum = this.details.length + 1;
         this.details.push(detail);
         return detail;
@@ -114,9 +114,12 @@ class ResultDetail extends BaseData {
     heat: number = 0;
     points: number = 0;
 
-    constructor(result_id: number = 0) {
+    constructor() {
         super();
         this.table = 'results_details';
+    }
+
+    setResult_id(result_id: number): void {
         this.result_id = result_id;
     }
 }

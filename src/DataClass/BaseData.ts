@@ -37,7 +37,8 @@ class BaseData {
         if (this.id && this.id > 0) {
             return MySQL.update(this.table, this.toJSON());
         } else {
-            return MySQL.insert(this.table, this.toJSON());
+            this.id = await MySQL.insert(this.table, this.toJSON());
+            return this.id;
         }
     }
 
