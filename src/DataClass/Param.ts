@@ -1,5 +1,4 @@
 import BaseData from "./BaseData";
-import MySQL from "../mysql";
 
 class Param extends BaseData {
     name: string = '';
@@ -28,9 +27,9 @@ class Param extends BaseData {
 
 export default Param;
 
-function getParam(mysql: MySQL, name: string): Param {
+function getParam(name: string): Param {
     const param = new Param();
-    param.loadBy(mysql, 'name', name);
+    param.loadBy('name', name);
     return param;
 }
 
