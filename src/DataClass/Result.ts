@@ -74,7 +74,7 @@ class Result extends BaseData {
     setAthleteRef(athlete_ref: string): void {
         this.athlete_ref = athlete_ref;
         this.athlete = new Athlete();
-        this.athlete.loadBy('license', athlete_ref);
+        this.athlete.loadBy('licence', athlete_ref);
         this.bib = this.athlete.bib;
         this.club = this.athlete.club;
     }
