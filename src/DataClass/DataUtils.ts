@@ -1,7 +1,7 @@
 import MySQL from "../mysql";
 
-export async function getAll(mysql: MySQL, table: string, classType: any): Promise<any[]> {
-    const results: { [key: string]: any }[] = await mysql.selectAll(table);
+export async function getAll(table: string, classType: any): Promise<any[]> {
+    const results: { [key: string]: any }[] = await MySQL.selectAll(table);
     return results.map((result: any) => {
         const instance = new classType();
         instance.fromJSON(result);
@@ -9,8 +9,8 @@ export async function getAll(mysql: MySQL, table: string, classType: any): Promi
     });
 }
 
-export async function searchAll(mysql: MySQL, table: string, fields: string[], keyword: string, classType: any): Promise<any[]> {
-    const results: { [key: string]: any }[] = await mysql.searchAll(table, fields, keyword);
+export async function searchAll(table: string, fields: string[], keyword: string, classType: any): Promise<any[]> {
+    const results: { [key: string]: any }[] = await MySQL.searchAll(table, fields, keyword);
     return results.map((result: any) => {
         const instance = new classType();
         instance.fromJSON(result);
