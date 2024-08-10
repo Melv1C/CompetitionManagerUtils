@@ -25,20 +25,20 @@ class Competition extends BaseData {
         this.name = name || '';
     }
 
-    async load(mysql: MySQL, id: number, loadEvents: boolean = true): Promise<any> {
-        const json = await mysql.select('competitions', id);
+    async load(id: number, loadEvents: boolean = true): Promise<any> {
+        const json = await MySQL.select('competitions', id);
         this.fromJSON(json);
 
         if (loadEvents) {
-            await this.loadEvents(mysql);
+            await this.loadEvents();
         }
     }
 
-    async loadEvents(mysql: MySQL): Promise<any> {
+    async loadEvents(): Promise<any> {
         const SQL =     `SELECT * FROM events e
                         LEFT JOIN competition_events ce ON e.id = ce.event_id
                         WHERE ce.competition_id = ${this.id}`;
-        const results = await mysql.query(SQL);
+        const results = await MySQL.query(SQL);
         this.events = results.map((result: any) => {
             const competition_event = new Competition_Event();
             competition_event.fromJSON(result);
@@ -46,18 +46,19 @@ class Competition extends BaseData {
         });
     }
 
-    async save(mysql: MySQL): Promise<any> {
-        const result = await super.save(mysql);
+    async save(): Promise<any> {
+        const result = await super.save();
         if (this.events.length > 0) {
-            await this.saveEvents(mysql);
+            await this.saveEvents();
         }
         return result;
     }
 
-    async saveEvents(mysql: MySQL): Promise<any> {
-        const query = ` INSERT INTO competition_events (competition_id, event_id, category_id, parentEvent_id)
-                        VALUES ${this.events.map((event: Competition_Event) => `(${this.id}, ${event.event_id}, ${event.category_id}, ${event.parentEvent_id})`).join(',')}`;
-        return mysql.query(query);
+    async saveEvents(): Promise<any> {
+        for (const event of this.events) {
+            event.competition_id = this.id;
+            await event.save();
+        }
     }
 }
 

@@ -1,5 +1,6 @@
 
 import MySQL from "./mysql";
+MySQL.init();
 export { MySQL }
 
 import BaseData from "./DataClass/BaseData";

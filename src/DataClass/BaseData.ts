@@ -33,26 +33,26 @@ class BaseData {
         return json;
     }
 
-    async save(mysql: MySQL): Promise<any> {
+    async save(): Promise<any> {
         if (this.id && this.id > 0) {
-            return mysql.update(this.table, this.toJSON());
+            return MySQL.update(this.table, this.toJSON());
         } else {
-            return mysql.insert(this.table, this.toJSON());
+            return MySQL.insert(this.table, this.toJSON());
         }
     }
 
-    async load(mysql: MySQL, id: number): Promise<any> {
-        const json = await mysql.select(this.table, id);
+    async load(id: number): Promise<any> {
+        const json = await MySQL.select(this.table, id);
         this.fromJSON(json);
     }
 
-    async loadBy(mysql: MySQL, field: string, value: any): Promise<any> {
-        const json = await mysql.selectBy(this.table, field, value);
+    async loadBy(field: string, value: any): Promise<any> {
+        const json = await MySQL.selectBy(this.table, field, value);
         this.fromJSON(json);
     }
 
-    async delete(mysql: MySQL): Promise<any> {
-        return mysql.delete(this.table, this.id);
+    async delete(): Promise<any> {
+        return MySQL.delete(this.table, this.id);
     }
 }
 
