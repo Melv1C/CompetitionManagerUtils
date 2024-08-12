@@ -15,6 +15,7 @@
   "scripts": {
     "build": "npx tsc",
     "prepare": "npm run build",
+    "dev": "npx nodemon --exec ts-node src/index.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {

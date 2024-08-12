@@ -18,24 +18,22 @@ class MySQL {
             database: process.env.MYSQL_DATABASE,
             timezone: 'Z'
         });
+    }
 
-        console.log('Connecting to MySQL...');
+    private static logQuery(query: string, values: any) {
+        console.log('query:', query);
+        if (values) {
+            console.log('values:', values);
+        }
     }
 
     static async query(sql: string, values?: any): Promise<any> {
+        this.logQuery(sql, values);
         return new Promise((resolve, reject) => {
-            const copySQL = sql.replace(/\?/g, (match: string) => {
-                if (values.length > 0) {
-                    return `'${values.shift()}'`;
-                } else {
-                    return match;
-                }
-            });
-            console.log('SQL:', copySQL);
-            console.log('sql:', sql);
-            this.connection.query(sql, values, (error, results) => {
-                if (error) {
-                    reject(error);
+            this.connection.query(sql, values, (err, results) => {
+                if (err) {
+                    console.error(err);
+                    reject(err);
                 } else {
                     resolve(results);
                 }
@@ -64,17 +62,17 @@ class MySQL {
         const query = `UPDATE ${table} SET ${columns.map((column: string) => `${column} = ?`).join(',')} WHERE id = ?`;
         const values = columns.map((column: string) => data[column]);
         values.push(data.id);
-        return this.query(query, values);
+        return await this.query(query, values);
     }
 
     private static async delete(table: string, id: number): Promise<any> {
         const query = `DELETE FROM ${table} WHERE id = ${id}`;
-        return this.query(query);
-    }
+        return await this.query(query);
+    } 
 
     private static async select(table: string, id: number): Promise<{ [key: string]: any }> {
-        const query = `SELECT * FROM ${table} WHERE id = ${id}`;
-        const results = await this.query(query);
+        const query = `SELECT * FROM ${table} WHERE id= ? LIMIT 1`;
+        const results = await this.query(query, [id]);
         return results.length > 0 ? results[0] : null;
     }
 
@@ -82,12 +80,12 @@ class MySQL {
         const conditions = Object.keys(fields).map((field: string) => `${field} = ?`).join(' AND ');
         const values = Object.values(fields);
         const query = `SELECT * FROM ${table} WHERE ${conditions}`;
-        return this.query(query, values);
+        return await this.query(query, values);
     }
 
     private static async selectAll(table: string): Promise<{ [key: string]: any }[]> {
         const query = `SELECT * FROM ${table}`;
-        return this.query(query);
+        return await this.query(query);
     }
 
     private static async searchAll(table: string, fields: string[], keyword: string): Promise<{ [key: string]: any }[]> {
@@ -95,14 +93,14 @@ class MySQL {
         const conditions = keys.map((key: string) => `(${fields.map((field: string) => `${field} LIKE ?`).join(' OR ')})`).join(' AND ');
         const values = keys.flatMap((key: string) => fields.map((field: string) => `%${key}%`));
         const query = `SELECT * FROM ${table} WHERE ${conditions}`;
-        return this.query(query, values);
+        return await this.query(query, values);
     }
 
     static async save<T extends BaseData>(data: T): Promise<number> {
         if (data.id === 0) {
-            return this.insert(data.getTableName(), data.toJson());
+            return await this.insert(data.getTableName(), data.toJson());
         } else {
-            return this.update(data.getTableName(), data.toJson());
+            return await this.update(data.getTableName(), data.toJson());
         }
     }
 
