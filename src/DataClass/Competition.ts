@@ -3,7 +3,7 @@ import Competition_Event from "./Competition_Event";
 
 
 
-abstract class Competition extends BaseData {
+class Competition extends BaseData {
 
     _table: string = 'competitions';
     static TABLE: string = 'competitions';
