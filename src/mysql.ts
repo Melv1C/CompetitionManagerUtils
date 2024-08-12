@@ -48,7 +48,7 @@ class MySQL {
         return results.map((result: any) => result.Field).filter((column: string) => !['create_at', 'update_at'].includes(column));
     }
 
-    private static async insert(table: string, data: any): Promise<any> {
+    private static async insert(table: string, data: any): Promise<number> {
         const columns = await this.getColumns(table);
         const query = ` INSERT INTO ${table} (${columns.join(',')}) 
                         VALUES (${columns.map((column: string) => "?").join(',')})`;
@@ -57,17 +57,19 @@ class MySQL {
         return results.insertId;
     }
 
-    private static async update(table: string, data: any): Promise<any> {
+    private static async update(table: string, data: any): Promise<boolean> {
         const columns = await this.getColumns(table);
         const query = `UPDATE ${table} SET ${columns.map((column: string) => `${column} = ?`).join(',')} WHERE id = ?`;
         const values = columns.map((column: string) => data[column]);
         values.push(data.id);
-        return await this.query(query, values);
+        const results = await this.query(query, values);
+        return results.affectedRows > 0;
     }
 
-    private static async delete(table: string, id: number): Promise<any> {
+    private static async delete(table: string, id: number): Promise<boolean> {
         const query = `DELETE FROM ${table} WHERE id = ${id}`;
-        return await this.query(query);
+        const results = await this.query(query);
+        return results.affectedRows > 0;
     } 
 
     private static async select(table: string, id: number): Promise<{ [key: string]: any }> {
@@ -96,12 +98,13 @@ class MySQL {
         return await this.query(query, values);
     }
 
-    static async save<T extends BaseData>(data: T): Promise<number> {
+    static async save<T extends BaseData>(data: T): Promise<boolean> {
         if (data.id === 0) {
-            return await this.insert(data.getTableName(), data.toJson());
+            data.id = await this.insert(data.getTableName(), data.toJson());
         } else {
-            return await this.update(data.getTableName(), data.toJson());
+            await this.update(data.getTableName(), data.toJson());
         }
+        return true;
     }
 
     static async remove<T extends BaseData>(data: T): Promise<boolean> {
@@ -113,37 +116,36 @@ class MySQL {
         }
     }
 
-    static async load<T extends BaseData>(table: string, id: number): Promise<T> {
-        const result = await this.select(table, id);
-        if (result) {
-            return BaseData.fromJson(result) as T;
-        } else {
-            return new BaseData() as T;
-        }
+    static async load<T extends typeof BaseData>(T: T, id: number): Promise<InstanceType<T>> {
+
+        const result = await this.select(T.TABLE, id);
+        let returnClass = T.fromJson(result);
+
+        return returnClass as InstanceType<T>;        
     }
 
-    static async loadAll<T extends BaseData>(table: string): Promise<T[]> {
-        const results = await this.selectAll(table);
-        return results.map((result: any) => BaseData.fromJson(result) as T);
+    static async loadAll<T extends typeof BaseData>(T: T): Promise<InstanceType<T>[]> {
+        const results = await this.selectAll(T.TABLE);
+        return results.map((result: any) => T.fromJson(result) as InstanceType<T>);
     }
 
-    static async loadBy<T extends BaseData>(table: string, field: string, value: any): Promise<T> {
-        const results = await this.selectByFields(table, { [field]: value });
+    static async loadBy<T extends typeof BaseData>(T: T, field: string, value: any): Promise<InstanceType<T>> {
+        const results = await this.selectByFields(T.TABLE, { [field]: value });
         if (results.length > 0) {
-            return BaseData.fromJson(results[0]) as T;
+            return T.fromJson(results[0]) as InstanceType<T>;
         } else {
-            return new BaseData() as T;
+            throw new Error('Not found');
         }
     }
 
-    static async loadAllBy<T extends BaseData>(table: string, fields: { [key: string]: any }): Promise<T[]> {
-        const results = await this.selectByFields(table, fields);
-        return results.map((result: any) => BaseData.fromJson(result) as T);
+    static async loadAllBy<T extends typeof BaseData>(T: T, fields: { [key: string]: any }): Promise<InstanceType<T>[]> {
+        const results = await this.selectByFields(T.TABLE, fields);
+        return results.map((result: any) => T.fromJson(result) as InstanceType<T>);
     }
 
-    static async search<T extends BaseData>(table: string, fields: string[], keyword: string): Promise<T[]> {
-        const results = await this.searchAll(table, fields, keyword);
-        return results.map((result: any) => BaseData.fromJson(result) as T);
+    static async search<T extends typeof BaseData>(T: T, fields: string[], keyword: string): Promise<InstanceType<T>[]> {
+        const results = await this.searchAll(T.TABLE, fields, keyword);
+        return results.map((result: any) => T.fromJson(result) as InstanceType<T>);
     }
 }
 

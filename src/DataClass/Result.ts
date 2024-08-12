@@ -2,7 +2,8 @@ import { MySQL, BaseData, Athlete, compareResult } from '../'
 
 class Result extends BaseData {
 
-    table: string = 'results';
+    _table: string = 'results';
+    static TABLE: string = 'results';
 
     competition_id: number = 0;
     competitionEvent_id: number = 0;
@@ -68,6 +69,10 @@ class Result extends BaseData {
 }
 
 class ResultDetail extends BaseData {
+    
+    _table: string = 'results_details';
+    static TABLE: string = 'results_details';
+
     result_id: number = 0;
     seqnum: number = 0;
     value: number = 0;
@@ -79,7 +84,6 @@ class ResultDetail extends BaseData {
 
     constructor() {
         super();
-        this.table = 'results_details';
     }
 
     setResult_id(result_id: number): void {

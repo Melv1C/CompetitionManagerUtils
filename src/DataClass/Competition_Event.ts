@@ -1,6 +1,10 @@
 import { BaseData } from './BaseData';
 
 class Competition_Event extends BaseData {
+
+    _table: string = 'competition_events';
+    static TABLE: string = 'competition_events';
+
     competition_id: number = 0;
     event_id: number = 0;
     category: string = '';
@@ -8,7 +12,6 @@ class Competition_Event extends BaseData {
     
     constructor() {
         super();
-        this.table = 'competition_events';
     }
 }
 

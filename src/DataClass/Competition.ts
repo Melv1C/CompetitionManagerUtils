@@ -4,6 +4,10 @@ import Competition_Event from "./Competition_Event";
 
 
 class Competition extends BaseData {
+
+    _table: string = 'competitions';
+    static TABLE: string = 'competitions';
+
     name: string = '';
     admin_id: string = '';
     competitionDate: Date = new Date();
@@ -18,8 +22,6 @@ class Competition extends BaseData {
     oneDayAthlete: boolean = false;
     foreignAthlete: boolean = true;
     events: Competition_Event[] = [];
-
-    table: string = 'competitions';
     
     constructor(name?: string) {
         super();

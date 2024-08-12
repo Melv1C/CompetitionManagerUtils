@@ -1,6 +1,10 @@
 import { BaseData } from "./BaseData";
 
 class Athlete extends BaseData {
+    
+    _table: string = 'athletes';
+    static TABLE: string = 'athletes';
+
     licence: string = '';
     firstName: string = '';
     lastName: string = '';
@@ -8,8 +12,6 @@ class Athlete extends BaseData {
     gender: string = '';
     birthDate: Date = new Date();
     club: string = '';
-
-    table: string = 'athletes';
 
     constructor() {
         super();

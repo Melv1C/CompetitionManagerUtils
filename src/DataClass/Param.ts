@@ -1,12 +1,14 @@
 import { MySQL, BaseData } from '..';
 
 class Param extends BaseData {
+
+    _table: string = 'params';  
+    static TABLE: string = 'params';
+    
     name: string = '';
     description: string = '';
     value: string = '';
     type: string = '';
-
-    table: string = 'params';    
 
     constructor() {
         super();
@@ -28,7 +30,7 @@ class Param extends BaseData {
 export default Param;
 
 async function getParam(name: string): Promise<Param> {
-    return MySQL.loadBy<Param>("params", "name", name);
+    return MySQL.loadBy(Param, "name", name);
 }
 
 export { getParam };
