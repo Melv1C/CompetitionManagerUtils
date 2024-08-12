@@ -31,6 +31,18 @@ class Result extends BaseData {
         this.resultType = resultType || '';
     }
 
+    // override fromJson
+    static fromJson(json: Record<string, any>): Result {
+        const result = new Result();
+        Object.assign(result, json);
+        if (json.details){
+            result.details = json.details.map((detail: Record<string, any>) => ResultDetail.fromJson(detail));
+        }
+        if (json.athlete) {
+            result.athlete = Athlete.fromJson(json.athlete);
+        }
+        return result;
+    }
 
     linkToInscription(inscription_id: number): void {
         this.inscription_id = inscription_id;
@@ -46,6 +58,7 @@ class Result extends BaseData {
     addDetail(): ResultDetail {
         const detail = new ResultDetail();
         detail.seqnum = this.details.length + 1;
+        detail.setResult_id(this.id);
         this.details.push(detail);
         return detail;
     }
