@@ -1,4 +1,4 @@
-import { MySQL, BaseData } from '..';
+import { BaseData } from '..';
 
 class Param extends BaseData {
 
@@ -28,9 +28,3 @@ class Param extends BaseData {
 }
 
 export default Param;
-
-async function getParam(name: string): Promise<Param> {
-    return MySQL.loadBy(Param, "name", name);
-}
-
-export { getParam };
