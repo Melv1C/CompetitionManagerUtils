@@ -18,20 +18,21 @@ class MySQL {
             database: process.env.MYSQL_DATABASE,
             timezone: 'Z'
         });
+
+        console.log('Connecting to MySQL...');
     }
 
     static async query(sql: string, values?: any): Promise<any> {
         return new Promise((resolve, reject) => {
-            let copySQL = sql;
-            copySQL = copySQL.replace(/\?/g, (match: string) => {
+            const copySQL = sql.replace(/\?/g, (match: string) => {
                 if (values.length > 0) {
                     return `'${values.shift()}'`;
                 } else {
                     return match;
                 }
             });
-            
             console.log('SQL:', copySQL);
+            console.log('sql:', sql);
             this.connection.query(sql, values, (error, results) => {
                 if (error) {
                     reject(error);
