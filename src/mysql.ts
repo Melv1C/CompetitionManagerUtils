@@ -22,7 +22,8 @@ class MySQL {
 
     static async query(sql: string, values?: any): Promise<any> {
         return new Promise((resolve, reject) => {
-            console.log('SQL:', sql.replace(/\?/g, (match: string) => JSON.stringify(values.shift())));
+            const completeSql = sql.replace(/\?/g, (match: string) => JSON.stringify(values.shift()));
+            console.log('SQL:', completeSql);
             this.connection.query(sql, values, (error, results) => {
                 if (error) {
                     reject(error);
