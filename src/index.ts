@@ -20,9 +20,6 @@ export { checkAdmin }
 import { getCategory } from "./getCategory";
 export { getCategory }
 
-import { getAll, searchAll } from "./DataClass/DataUtils";
-export { getAll, searchAll }
-
 import { compareResult, isResultValid } from "./resultUtils";
 export { compareResult, isResultValid }
 
