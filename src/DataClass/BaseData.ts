@@ -1,5 +1,5 @@
 
-export class BaseData {
+export abstract class BaseData {
     _table: string = '';
     static TABLE: string = '';
 
@@ -31,4 +31,10 @@ export class BaseData {
         Object.assign(obj, json);
         return obj;
     }
+
+    public abstract save(): Promise<boolean>;
+    public static load<T extends typeof BaseData>(T: T, id: number): Promise<InstanceType<T>> {
+        throw new Error("Method not implemented.");
+    }
+    public abstract delete(): Promise<boolean>;
 }

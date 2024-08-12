@@ -1,6 +1,6 @@
 import { BaseData } from "./BaseData";
 
-class Athlete extends BaseData {
+abstract class Athlete extends BaseData {
     
     _table: string = 'athletes';
     static TABLE: string = 'athletes';

@@ -1,6 +1,6 @@
-import { MySQL, BaseData, Athlete, compareResult } from '../'
+import { BaseData, Athlete, compareResult } from '../'
 
-class Result extends BaseData {
+abstract class Result extends BaseData {
 
     _table: string = 'results';
     static TABLE: string = 'results';
@@ -31,7 +31,6 @@ class Result extends BaseData {
         this.resultType = resultType || '';
     }
 
-
     linkToInscription(inscription_id: number): void {
         this.inscription_id = inscription_id;
     }
@@ -41,13 +40,6 @@ class Result extends BaseData {
         this.athlete_ref = athlete.licence;
         this.bib = athlete.bib;
         this.club = athlete.club;
-    }
-
-    addDetail(): ResultDetail {
-        const detail = new ResultDetail();
-        detail.seqnum = this.details.length + 1;
-        this.details.push(detail);
-        return detail;
     }
 
     calculatePoints(): void {
@@ -68,7 +60,7 @@ class Result extends BaseData {
 
 }
 
-class ResultDetail extends BaseData {
+abstract class ResultDetail extends BaseData {
     
     _table: string = 'results_details';
     static TABLE: string = 'results_details';

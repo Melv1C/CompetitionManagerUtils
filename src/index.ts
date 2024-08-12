@@ -8,11 +8,10 @@ import Event from "./DataClass/Event";
 import Category from "./DataClass/Category";
 import Competition from "./DataClass/Competition";
 import Competition_Event from "./DataClass/Competition_Event";
-import Param, { getParam } from "./DataClass/Param";
+import Param from "./DataClass/Param";
 import {Result, ResultDetail} from "./DataClass/Result";
 
 export { BaseData, Athlete, Event, Category, Competition, Competition_Event, Param, Result, ResultDetail }
-export { getParam }
 
 import { checkAdmin } from "./adminUtils";
 export { checkAdmin }
