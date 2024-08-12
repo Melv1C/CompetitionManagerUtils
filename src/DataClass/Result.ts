@@ -1,6 +1,9 @@
 import { MySQL, BaseData, Athlete, compareResult } from '../'
 
 class Result extends BaseData {
+
+    table: string = 'results';
+
     competition_id: number = 0;
     competitionEvent_id: number = 0;
     resultType: string = '';
@@ -22,58 +25,11 @@ class Result extends BaseData {
 
     constructor(competition_id?: number, competitionEvent_id?: number, resultType?: string) {
         super();
-        this.table = 'results';
         this.competition_id = competition_id || 0;
         this.competitionEvent_id = competitionEvent_id || 0;
         this.resultType = resultType || '';
     }
 
-    fromJSON(json: { [key: string]: any; }): void {
-        super.fromJSON(json);
-        if (json.athlete) {
-            this.athlete = new Athlete();
-            this.athlete.fromJSON(json.athlete);
-        }
-        if (json.details) {
-            this.details = json.details.map((detail: any) => {
-                const d = new ResultDetail();
-                d.fromJSON(detail);
-                return d;
-            });
-        }
-    }
-
-    async load(id: number): Promise<any> {
-        await super.load(id);
-        this.athlete = new Athlete();
-        await this.athlete.loadBy('license', this.athlete_ref);
-        await this.loadDetails();
-    }
-
-    async loadDetails(): Promise<any> {
-        const SQL = `SELECT * FROM results_details WHERE result_id = ${this.id} ORDER BY seqnum`;
-        const results = await MySQL.query(SQL);
-        this.details = results.map((result: any) => {
-            const detail = new ResultDetail();
-            detail.fromJSON(result);
-            return detail;
-        });
-    }
-
-    async save(): Promise<any> {
-        const result = await super.save();
-        if (this.details.length > 0) {
-            await this.saveDetails();
-        }
-        return result;
-    }
-
-    async saveDetails(): Promise<any> {
-        for (const detail of this.details) {
-            detail.result_id = this.id;
-            await detail.save();
-        }
-    }
 
     linkToInscription(inscription_id: number): void {
         this.inscription_id = inscription_id;
@@ -84,14 +40,6 @@ class Result extends BaseData {
         this.athlete_ref = athlete.licence;
         this.bib = athlete.bib;
         this.club = athlete.club;
-    }
-
-    async setAthleteRef(athlete_ref: string): Promise<void> {
-        this.athlete_ref = athlete_ref;
-        this.athlete = new Athlete();
-        await this.athlete.loadBy('licence', athlete_ref);
-        this.bib = this.athlete.bib;
-        this.club = this.athlete.club;
     }
 
     addDetail(): ResultDetail {
@@ -140,13 +88,3 @@ class ResultDetail extends BaseData {
 }
 
 export { Result, ResultDetail };
-
-export async function getResults(competition_id: number, competitionEvent_id: number): Promise<Result[]> {
-    const SQL = `SELECT * FROM results WHERE competition_id = ${competition_id} AND competitionEvent_id = ${competitionEvent_id}`;
-    const results = await MySQL.query(SQL);
-    return results.map((result: any) => {
-        const r = new Result(competition_id, competitionEvent_id, result.resultType);
-        r.fromJSON(result);
-        return r;
-    });
-}

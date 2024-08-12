@@ -1,4 +1,4 @@
-import BaseData from "./BaseData";
+import { BaseData } from "./BaseData";
 
 class Athlete extends BaseData {
     licence: string = '';
@@ -9,9 +9,10 @@ class Athlete extends BaseData {
     birthDate: Date = new Date();
     club: string = '';
 
+    table: string = 'athletes';
+
     constructor() {
         super();
-        this.table = 'athletes';
     }
 }
 

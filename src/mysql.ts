@@ -1,17 +1,13 @@
 import mysql from 'mysql2';
 import dotenv from 'dotenv';
 
+import { BaseData } from '.';
+
 dotenv.config();
 
 class MySQL {
     
     private static connection: mysql.Connection;
-
-    constructor() {
-        if (!MySQL.connection) {
-            MySQL.init();
-        }
-    }
 
     static init() {
         this.connection = mysql.createConnection({
@@ -90,6 +86,43 @@ class MySQL {
         const values = keys.flatMap((key: string) => fields.map((field: string) => `%${key}%`));
         const query = `SELECT * FROM ${table} WHERE ${conditions}`;
         return this.query(query, values);
+    }
+
+
+
+    static async save<T extends BaseData>(data: T): Promise<number> {
+        if (data.id === 0) {
+            return this.insert(data.getTableName(), data.toJson());
+        } else {
+            return this.update(data.getTableName(), data.toJson());
+        }
+    }
+
+    static async remove<T extends BaseData>(data: T): Promise<boolean> {
+        if (data.id === 0) {
+            return false;
+        } else {
+            await this.delete(data.getTableName(), data.id);
+            return true;
+        }
+    }
+
+    static async load<T extends BaseData>(table: string, id: number): Promise<T> {
+        const result = await this.select(table, id);
+        if (result) {
+            return BaseData.fromJson(result) as T;
+        } else {
+            return new BaseData() as T;
+        }
+    }
+
+    static async loadBy<T extends BaseData>(table: string, field: string, value: any): Promise<T> {
+        const result = await this.selectBy(table, field, value);
+        if (result) {
+            return BaseData.fromJson(result) as T;
+        } else {
+            return new BaseData() as T;
+        }
     }
 }
 

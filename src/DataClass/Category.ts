@@ -1,4 +1,4 @@
-import BaseData from './BaseData';
+import { BaseData } from './BaseData';
 
 class Category extends BaseData {
     name: string = '';

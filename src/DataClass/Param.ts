@@ -1,15 +1,15 @@
-import BaseData from "./BaseData";
+import { MySQL, BaseData } from '..';
 
 class Param extends BaseData {
     name: string = '';
     description: string = '';
     value: string = '';
     type: string = '';
-    
+
+    table: string = 'params';    
 
     constructor() {
         super();
-        this.table = 'params';
     }
 
     getValue(): any {
@@ -27,10 +27,8 @@ class Param extends BaseData {
 
 export default Param;
 
-function getParam(name: string): Param {
-    const param = new Param();
-    param.loadBy('name', name);
-    return param;
+async function getParam(name: string): Promise<Param> {
+    return MySQL.loadBy<Param>("params", "name", name);
 }
 
 export { getParam };

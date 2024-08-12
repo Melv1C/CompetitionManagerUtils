@@ -1,6 +1,5 @@
-import MySQL from "../mysql";
-import BaseData from "./BaseData";
-import Category from "./Category";
+
+import { BaseData } from './BaseData';
 
 class Event extends BaseData {
     name: string = '';
@@ -8,9 +7,10 @@ class Event extends BaseData {
     eventGrouping: string = '';
     eventType: string = '';
 
+    table: string = 'events';
+
     constructor() {
         super();
-        this.table = 'events';
     }
 }
 
