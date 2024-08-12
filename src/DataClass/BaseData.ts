@@ -27,8 +27,8 @@ export class BaseData {
     }
 
     static fromJson<T extends BaseData>(this: new () => T, json: Record<string, any>): T {
-        const obj = new this();
-        Object.assign(obj, json);
-        return obj;
+        const result = new this();
+        Object.assign(result, json);
+        return result;
     }
 }

@@ -1,7 +1,6 @@
-import { MySQL, BaseData, Athlete, compareResult } from '../'
+import { BaseData, Athlete, compareResult } from '../'
 
 class Result extends BaseData {
-
     _table: string = 'results';
     static TABLE: string = 'results';
 
@@ -29,19 +28,6 @@ class Result extends BaseData {
         this.competition_id = competition_id || 0;
         this.competitionEvent_id = competitionEvent_id || 0;
         this.resultType = resultType || '';
-    }
-
-    // override fromJson
-    static fromJson(json: Record<string, any>): Result {
-        const result = new Result();
-        Object.assign(result, json);
-        if (json.details){
-            result.details = json.details.map((detail: Record<string, any>) => ResultDetail.fromJson(detail));
-        }
-        if (json.athlete) {
-            result.athlete = Athlete.fromJson(json.athlete);
-        }
-        return result;
     }
 
     linkToInscription(inscription_id: number): void {

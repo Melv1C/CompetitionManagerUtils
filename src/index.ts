@@ -26,3 +26,4 @@ export { compareResult, isResultValid }
 import Token, {generateToken} from "./Token";
 export { Token, generateToken }
 
+
