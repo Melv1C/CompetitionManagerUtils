@@ -12,5 +12,5 @@ export { BaseData, Athlete, Event, Category, Competition, Competition_Event, Par
 import { getCategory } from "./getCategory";
 export { getCategory }
 
-import { compareResult, isResultValid } from "./resultUtils";
-export { compareResult, isResultValid }
+import { compareResult, isResultValid, formatResult } from "./resultUtils";
+export { compareResult, isResultValid, formatResult } 

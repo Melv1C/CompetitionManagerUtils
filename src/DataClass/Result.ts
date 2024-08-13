@@ -22,8 +22,9 @@ class Result extends BaseData {
     value: number = 0;
     result: string = '';
     wind: string = '';
+
     points: number = 0;
-    
+
     details: ResultDetail[] = [];
 
     athlete: Athlete | null = null;
@@ -46,24 +47,26 @@ class Result extends BaseData {
         this.club = athlete.club;
     }
 
-    addDetail(): ResultDetail {
-        const detail = new ResultDetail();
-        detail.seqnum = this.details.length + 1;
-        detail.setResult_id(this.id);
+    getDetails(): ResultDetail[] {
+        return this.details;
+    }
+
+    newDetail(): ResultDetail {
+        const detail = new ResultDetail(this.id, this.details.length + 1);
         this.details.push(detail);
         return detail;
     }
 
-    calculatePoints(): void {
-        // Todo: Implement this
+    getDetail(seqnum: number): ResultDetail | undefined {
+        return this.details.find((detail) => detail.seqnum === seqnum);
     }
 
-    computeResult(eventType: string): void {
-        this.details.sort((a, b) => compareResult(eventType, a.value, b.value));
+    getBest(): void {
+        this.details.sort((a, b) => compareResult(this.resultType, a.value, b.value));
+
         this.details[0].best = true;
         this.value = this.details[0].value;
         this.result = this.details[0].result;
-        this.points = this.details[0].points;
         this.wind = this.details[0].wind;
 
         this.details.sort((a, b) => a.seqnum - b.seqnum);
@@ -78,19 +81,37 @@ class ResultDetail extends BaseData {
 
     result_id: number = 0;
     seqnum: number = 0;
+
+    best: boolean = false;
+
     value: number = 0;
     result: string = '';
-    best: boolean = false;
     wind: string = '';
-    points: number = 0;
 
-    constructor() {
+    constructor(result_id: number, seqnum: number) {
         super();
+        this.result_id = result_id;
+        this.seqnum = seqnum;
     }
-
+    
     setResult_id(result_id: number): void {
         this.result_id = result_id;
     }
+
+    setPerformance(value: number, result: string, wind: string): void {
+        this.value = value;
+        this.result = result;
+        this.wind = wind;
+    }
+
+    setBest(): void {
+        this.best = true;
+    }
+
+    isBest(): boolean {
+        return this.best;
+    }
+
 }
 
 export { Result, ResultDetail };
