@@ -88,10 +88,10 @@ class ResultDetail extends BaseData {
     result: string = '';
     wind: string = '';
 
-    constructor(result_id: number, seqnum: number) {
+    constructor(result_id?: number, seqnum?: number) {
         super();
-        this.result_id = result_id;
-        this.seqnum = seqnum;
+        this.result_id = result_id || 0;
+        this.seqnum = seqnum || 0;
     }
     
     setResult_id(result_id: number): void {
