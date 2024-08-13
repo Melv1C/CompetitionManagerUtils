@@ -4,8 +4,11 @@ class Result extends BaseData {
     _table: string = 'results';
     static TABLE: string = 'results';
 
-    competition_id: number = 0;
-    competitionEvent_id: number = 0;
+    // competition_id: number = 0;
+    // competitionEvent_id: number = 0;
+
+    competition_id: string = '';
+    competitionEvent_id: string = '';
     resultType: string = '';
 
     inscription_id: number = 0;
@@ -23,10 +26,10 @@ class Result extends BaseData {
 
     athlete: Athlete | null = null;
 
-    constructor(competition_id?: number, competitionEvent_id?: number, resultType?: string) {
+    constructor(competition_id?: string, competitionEvent_id?: string, resultType?: string) {
         super();
-        this.competition_id = competition_id || 0;
-        this.competitionEvent_id = competitionEvent_id || 0;
+        this.competition_id = competition_id || '';
+        this.competitionEvent_id = competitionEvent_id || '';
         this.resultType = resultType || '';
     }
 
