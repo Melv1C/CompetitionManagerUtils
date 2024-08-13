@@ -17,11 +17,13 @@ class Result extends BaseData {
     bib: number = 0;
     club: string = '';
     status_ref: number = 0;
+    heat: number = 0;
+
     value: number = 0;
     result: string = '';
     wind: string = '';
-    heat: number = 0;
     points: number = 0;
+    
     details: ResultDetail[] = [];
 
     athlete: Athlete | null = null;
@@ -63,7 +65,6 @@ class Result extends BaseData {
         this.result = this.details[0].result;
         this.points = this.details[0].points;
         this.wind = this.details[0].wind;
-        this.heat = this.details[0].heat;
 
         this.details.sort((a, b) => a.seqnum - b.seqnum);
     }
@@ -81,7 +82,6 @@ class ResultDetail extends BaseData {
     result: string = '';
     best: boolean = false;
     wind: string = '';
-    heat: number = 0;
     points: number = 0;
 
     constructor() {
