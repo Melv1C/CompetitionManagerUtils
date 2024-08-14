@@ -8,7 +8,6 @@ class Event extends BaseData {
 
     name: string = '';
     abbr: string = '';
-    eventGrouping: string = '';
     eventType: string = '';
 
     constructor() {

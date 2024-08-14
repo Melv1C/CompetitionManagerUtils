@@ -1,39 +1,55 @@
 import { BaseData, Athlete, compareResult } from '../'
 
+/*
+CREATE TABLE IF NOT EXISTS results (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    competition_id INT,
+    competitionEvent_id INT,
+    athlete_ref VARCHAR(25),
+    bib INT,
+    club VARCHAR(25),
+    heat INT,
+    initialOrder INT,
+    value double,
+    result varchar(10),
+    wind varchar(10),
+    points INT,
+    create_by VARCHAR(50),
+    create_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    update_by VARCHAR(50),
+    update_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (competition_id) REFERENCES competitions(id),
+    FOREIGN KEY (competitionEvent_id) REFERENCES competition_events(id),
+    FOREIGN KEY (athlete_ref) REFERENCES athletes(licence)
+);
+*/
+
 class Result extends BaseData {
     _table: string = 'results';
     static TABLE: string = 'results';
 
-    // competition_id: number = 0;
-    // competitionEvent_id: number = 0;
+    competition_id:             number = 0;
+    competitionEvent_id:        number = 0;
 
-    competition_id: string = '';
-    competitionEvent_id: string = '';
-    resultType: string = '';
+    athlete_ref:                string = '';
+    bib:                        number = 0;
+    club:                       string = '';
 
-    inscription_id: number = 0;
+    heat:                       number = 0;
+    initialOrder:               number = 0;
 
-    athlete_ref: string = '';
-    bib: number = 0;
-    club: string = '';
-    status_ref: number = 0;
-    heat: number = 0;
+    value:                      number = 0;
+    result:                     string = '';
+    wind:                        string = '';
 
-    value: number = 0;
-    result: string = '';
-    wind: string = '';
+    points:                     number = 0;
 
-    points: number = 0;
+    details:                    ResultDetail[] = [];
 
-    details: ResultDetail[] = [];
+    athlete:                    Athlete | null = null;
 
-    athlete: Athlete | null = null;
-
-    constructor(competition_id?: string, competitionEvent_id?: string, resultType?: string) {
+    constructor() {
         super();
-        this.competition_id = competition_id || '';
-        this.competitionEvent_id = competitionEvent_id || '';
-        this.resultType = resultType || '';
     }
 
     linkToInscription(inscription_id: number): void {
@@ -79,14 +95,14 @@ class ResultDetail extends BaseData {
     _table: string = 'results_details';
     static TABLE: string = 'results_details';
 
-    result_id: number = 0;
-    seqnum: number = 0;
+    result_id:              number = 0;
+    seqnum:                 number = 0;
 
-    best: boolean = false;
+    best:                   boolean = false;
 
-    value: number = 0;
-    result: string = '';
-    wind: string = '';
+    value:                  number = 0;
+    result:                 string = '';
+    wind:                   string = '';
 
     constructor(result_id?: number, seqnum?: number) {
         super();

@@ -7,6 +7,7 @@ class Category extends BaseData {
 
     name: string = '';
     gender: string = '';
+    orderNum: number = 0;
 
     constructor() {
         super();
