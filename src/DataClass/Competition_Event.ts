@@ -8,8 +8,11 @@ class Competition_Event extends BaseData {
     competition_id:         number = 0;
     event_id:               number = 0;
     parentEvent_id:         number = 0;
+
+    name:                   string = '';
     time:                   string = '';
     maxAthletes:            number = 0;
+    price:                  number = 0;
     categories:             string[] = [];
     
     constructor() {
