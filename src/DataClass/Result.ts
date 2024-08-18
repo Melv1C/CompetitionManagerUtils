@@ -1,4 +1,4 @@
-import { BaseData, Athlete, compareResult } from '../'
+import { BaseData, Athlete, compareResult, formatResult } from '../'
 
 /*
 CREATE TABLE IF NOT EXISTS results (
@@ -84,12 +84,22 @@ class Result extends BaseData {
 
         this.details[0].best = true;
         this.value = this.details[0].value;
-        this.result = this.details[0].result;
+        this.result = formatResult(this.value, this.resultType);
         this.wind = this.details[0].wind;
 
         this.computePoints();
 
-        this.details.sort((a, b) => a.trynum - b.trynum);
+        this.orderDetails();
+    }
+
+    orderDetails(): void {
+        this.details.sort((a, b) => {
+            if (a.trynum == b.trynum) {
+                return compareResult(this.resultType, b.value, a.value);
+            } else {
+                return a.trynum - b.trynum;
+            }
+        });
     }
 
     computePoints(): void {
