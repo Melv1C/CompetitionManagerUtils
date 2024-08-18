@@ -63,7 +63,7 @@ export function formatResult(result: number, resultType: string): string {
             let seconds = time.getUTCSeconds();
             let milliseconds = time.getUTCMilliseconds();
 
-            let centiseconds = Math.floor(milliseconds / 10);
+            let centiseconds = Math.ceil(milliseconds / 10);
 
             if (minutes > 0) {
                 return `${minutes}:${seconds.toString().padStart(2, '0')}.${centiseconds.toString().padStart(2, '0')}`;
