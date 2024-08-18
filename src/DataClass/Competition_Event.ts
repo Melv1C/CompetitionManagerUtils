@@ -1,4 +1,4 @@
-import { BaseData } from './BaseData';
+import { BaseData, Event } from '..';
 
 class Competition_Event extends BaseData {
 
@@ -7,6 +7,9 @@ class Competition_Event extends BaseData {
 
     competition_id:         number = 0;
     event_id:               number = 0;
+    event_name:             string = '';
+    event_abbr:             string = '';
+    event_type:             string = '';
     parentEvent_id:         number|null = null;
 
     name:                   string = '';
@@ -14,6 +17,13 @@ class Competition_Event extends BaseData {
     maxAthletes:            number = 0;
     price:                  number = 0;
     categories:             string[] = [];
+
+    setEvent(event: Event): void {
+        this.event_id = event.id;
+        this.event_name = event.name;
+        this.event_abbr = event.abbr;
+        this.event_type = event.eventType;
+    }
     
     constructor() {
         super();
