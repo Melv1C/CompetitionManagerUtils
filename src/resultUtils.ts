@@ -70,7 +70,8 @@ export function formatResult(result: number, resultType: string): string {
             } else {
                 return `${seconds}.${centiseconds.toString().padStart(2, '0')}`;
             }
-        case 'Height' || 'Distance':
+        case 'Height':
+        case 'Distance':
             // always 2 decimals
             return `${result.toFixed(2)} m`;
         case 'Points':
