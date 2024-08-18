@@ -69,7 +69,7 @@ class Result extends BaseData {
         this.result = formatResult(this.value, this.event_resultType);
         this.wind = this.details[0].wind;
 
-        this.computePoints();
+        //this.computePoints();
 
         this.orderDetails();
     }
@@ -85,7 +85,7 @@ class Result extends BaseData {
     }
 
     computePoints(): void {
-        this.points = 0;
+        // TODO: Implement points computation
     }
 
 }

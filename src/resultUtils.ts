@@ -8,7 +8,8 @@ function GetCode(result: number, resultType: string): string {
                     return 'DNF';
                 case -2:
                     return 'DQ';
-                case -9 || -3: // ??
+                case -3: // ??
+                case -9:
                     return 'DNS';
                 default:
                     return result.toString();
