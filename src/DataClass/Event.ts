@@ -9,6 +9,7 @@ class Event extends BaseData {
     name: string = '';
     abbr: string = '';
     eventType: string = '';
+    resultType: string = '';
 
     constructor() {
         super();

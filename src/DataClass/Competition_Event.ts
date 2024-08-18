@@ -9,7 +9,7 @@ class Competition_Event extends BaseData {
     event_id:               number = 0;
     event_name:             string = '';
     event_abbr:             string = '';
-    event_type:             string = '';
+    event_resultType:       string = '';
     parentEvent_id:         number|null = null;
 
     name:                   string = '';
@@ -22,7 +22,7 @@ class Competition_Event extends BaseData {
         this.event_id = event.id;
         this.event_name = event.name;
         this.event_abbr = event.abbr;
-        this.event_type = event.eventType;
+        this.event_type = event.resultType;
     }
     
     constructor() {
