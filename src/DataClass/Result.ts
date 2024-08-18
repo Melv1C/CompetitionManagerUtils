@@ -37,6 +37,8 @@ class Result extends BaseData {
 
     heat:                       number = 0;
     initialOrder:               number = 0;
+    tempOrder:                  number = 0;
+    finalOrder:                 number = 0;
 
     value:                      number = 0;
     result:                     string = '';
@@ -68,13 +70,13 @@ class Result extends BaseData {
     }
 
     newDetail(): ResultDetail {
-        const detail = new ResultDetail(this.id, this.details.length + 1);
+        const detail = new ResultDetail(this.id);
         this.details.push(detail);
         return detail;
     }
 
-    getDetail(seqnum: number): ResultDetail | undefined {
-        return this.details.find((detail) => detail.seqnum === seqnum);
+    getDetail(trynum: number): ResultDetail | undefined {
+        return this.details.find((detail) => detail.trynum === trynum);
     }
 
     getBest(): void {
@@ -85,7 +87,13 @@ class Result extends BaseData {
         this.result = this.details[0].result;
         this.wind = this.details[0].wind;
 
-        this.details.sort((a, b) => a.seqnum - b.seqnum);
+        this.computePoints();
+
+        this.details.sort((a, b) => a.trynum - b.trynum);
+    }
+
+    computePoints(): void {
+        this.points = 0;
     }
 
 }
@@ -96,7 +104,8 @@ class ResultDetail extends BaseData {
     static TABLE: string = 'results_details';
 
     result_id:              number = 0;
-    seqnum:                 number = 0;
+
+    trynum:                 number = 0;
 
     best:                   boolean = false;
 
@@ -104,17 +113,17 @@ class ResultDetail extends BaseData {
     result:                 string = '';
     wind:                   string = '';
 
-    constructor(result_id?: number, seqnum?: number) {
+    constructor(result_id?: number) {
         super();
         this.result_id = result_id || 0;
-        this.seqnum = seqnum || 0;
     }
     
     setResult_id(result_id: number): void {
         this.result_id = result_id;
     }
 
-    setPerformance(value: number, result: string, wind: string): void {
+    setPerformance(trynum: number, value: number, result: string, wind: string): void {
+        this.trynum = trynum;
         this.value = value;
         this.result = result;
         this.wind = wind;
