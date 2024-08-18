@@ -18,7 +18,7 @@ export function getCategory(
             }
         }
     } else {
-        return `${gender == "M" ? "M" : "W"} ${parseInt((age / 5).toString()) * 5}`;
+        return `${gender == "M" ? "M" : "W"}${parseInt((age / 5).toString()) * 5}`;
     }
 
     return "";
