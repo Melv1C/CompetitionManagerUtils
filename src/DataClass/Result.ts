@@ -62,11 +62,11 @@ class Result extends BaseData {
     }
 
     getBest(): void {
-        this.details.sort((a, b) => compareResult(this.resultType, a.value, b.value));
+        this.details.sort((a, b) => compareResult(this.event_resultType, a.value, b.value));
 
         this.details[0].best = true;
         this.value = this.details[0].value;
-        this.result = formatResult(this.value, this.resultType);
+        this.result = formatResult(this.value, this.event_resultType);
         this.wind = this.details[0].wind;
 
         this.computePoints();
@@ -77,7 +77,7 @@ class Result extends BaseData {
     orderDetails(): void {
         this.details.sort((a, b) => {
             if (a.trynum == b.trynum) {
-                return compareResult(this.resultType, b.value, a.value);
+                return compareResult(this.event_resultType, b.value, a.value);
             } else {
                 return a.trynum - b.trynum;
             }
