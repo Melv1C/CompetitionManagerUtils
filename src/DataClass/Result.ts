@@ -1,35 +1,14 @@
-import { BaseData, Athlete, compareResult, formatResult } from '../'
-
-/*
-CREATE TABLE IF NOT EXISTS results (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    competition_id INT,
-    competitionEvent_id INT,
-    athlete_ref VARCHAR(25),
-    bib INT,
-    club VARCHAR(25),
-    heat INT,
-    initialOrder INT,
-    value double,
-    result varchar(10),
-    wind varchar(10),
-    points INT,
-    create_by VARCHAR(50),
-    create_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    update_by VARCHAR(50),
-    update_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (competition_id) REFERENCES competitions(id),
-    FOREIGN KEY (competitionEvent_id) REFERENCES competition_events(id),
-    FOREIGN KEY (athlete_ref) REFERENCES athletes(licence)
-);
-*/
+import { BaseData, Athlete, compareResult, formatResult, Competition_Event } from '../'
 
 class Result extends BaseData {
     _table: string = 'results';
     static TABLE: string = 'results';
 
     competition_id:             number = 0;
+
     competitionEvent_id:        number = 0;
+    event_name:                 string = ''; // Competition_Event.name
+    event_resultType:           string = ''; // Competition_Event.event_resultType
 
     athlete_ref:                string = '';
     bib:                        number = 0;
@@ -42,7 +21,7 @@ class Result extends BaseData {
 
     value:                      number = 0;
     result:                     string = '';
-    wind:                        string = '';
+    wind:                       string = '';
 
     points:                     number = 0;
 
@@ -54,9 +33,12 @@ class Result extends BaseData {
         super();
     }
 
-    linkToInscription(inscription_id: number): void {
-        this.inscription_id = inscription_id;
+    setEvent(event: Competition_Event): void {
+        this.competitionEvent_id = event.id;
+        this.event_name = event.name;
+        this.event_resultType = event.event_resultType;
     }
+
 
     setAthlete(athlete: Athlete): void {
         this.athlete = athlete;
