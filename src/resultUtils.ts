@@ -71,7 +71,8 @@ export function formatResult(result: number, resultType: string): string {
                 return `${seconds}.${centiseconds.toString().padStart(2, '0')}`;
             }
         case 'Height' || 'Distance':
-            return `${result} m`;
+            // always 2 decimals
+            return `${result.toFixed(2)} m`;
         case 'Points':
             return `${result} pts`;
         default:
