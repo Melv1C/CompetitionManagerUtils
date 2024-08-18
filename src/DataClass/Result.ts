@@ -1,4 +1,4 @@
-import { BaseData, Athlete, compareResult, formatResult, Competition_Event } from '../'
+import { BaseData, Athlete, compareResult, formatResult, Competition_Event, getCategory } from '../'
 
 class Result extends BaseData {
     _table: string = 'results';
@@ -13,6 +13,7 @@ class Result extends BaseData {
     athlete_ref:                string = '';
     bib:                        number = 0;
     club:                       string = '';
+    category:                   string = '';
 
     heat:                       number = 0;
     initialOrder:               number = 0;
@@ -45,6 +46,7 @@ class Result extends BaseData {
         this.athlete_ref = athlete.licence;
         this.bib = athlete.bib;
         this.club = athlete.club;
+        this.category = getCategory(athlete.birthdate, new Date(), athlete.gender);
     }
 
     getDetails(): ResultDetail[] {
