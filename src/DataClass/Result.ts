@@ -47,7 +47,7 @@ class Result extends BaseData {
         this.firstName = athlete.firstName;
         this.bib = athlete.bib;
         this.club = athlete.club;
-        this.category = getCategory(athlete.birthdate, competitionDate, athlete.gender);
+        this.category = getCategory(athlete.birthDate, competitionDate, athlete.gender);
     }
 
     getDetails(): ResultDetail[] {

@@ -8,7 +8,6 @@ export function getCategory(
     gender: string
 ): string {
     const age: number = competitionDate.getFullYear() - birthDate.getFullYear();
-    console.log("age", age);
     if (age < 35) {
         const yearsDiff = competitionDate.getUTCFullYear() + (competitionDate.getUTCMonth() > 10 ? 1 : 0) 
                         - birthDate.getUTCFullYear();
