@@ -11,6 +11,8 @@ class Result extends BaseData {
     event_resultType:           string = ''; // Competition_Event.event_resultType
 
     athlete_ref:                string = '';
+    lastName:                   string = '';
+    firstName:                  string = '';
     bib:                        number = 0;
     club:                       string = '';
     category:                   string = '';
@@ -28,8 +30,6 @@ class Result extends BaseData {
 
     details:                    ResultDetail[] = [];
 
-    athlete:                    Athlete | null = null;
-
     constructor() {
         super();
     }
@@ -41,12 +41,13 @@ class Result extends BaseData {
     }
 
 
-    setAthlete(athlete: Athlete): void {
-        this.athlete = athlete;
+    setAthlete(athlete: Athlete, competitionDate: Date = new Date()): void {
         this.athlete_ref = athlete.licence;
+        this.lastName = athlete.lastName;
+        this.firstName = athlete.firstName;
         this.bib = athlete.bib;
         this.club = athlete.club;
-        this.category = getCategory(athlete.birthdate, new Date(), athlete.gender);
+        this.category = getCategory(athlete.birthdate, competitionDate, athlete.gender);
     }
 
     getDetails(): ResultDetail[] {
