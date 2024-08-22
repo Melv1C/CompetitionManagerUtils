@@ -60,21 +60,29 @@ class Result extends BaseData {
         return detail;
     }
 
-    getDetail(trynum: number): ResultDetail | undefined {
+    getDetail(trynum: string): ResultDetail | undefined {
         return this.details.find((detail) => detail.trynum === trynum);
     }
 
     getBest(): void {
-        this.details.sort((a, b) => compareResult(this.event_resultType, a.value, b.value));
 
-        this.details[0].best = true;
-        this.value = this.details[0].value;
-        this.result = formatResult(this.value, this.event_resultType);
-        this.wind = this.details[0].wind;
+        if (this.event_resultType != "Points") {
+            this.details.sort((a, b) => compareResult(this.event_resultType, a.value, b.value));
 
-        //this.computePoints();
+            this.details[0].best = true;
+            this.value = this.details[0].value;
+            this.result = formatResult(this.value, this.event_resultType);
+            this.wind = this.details[0].wind;
 
-        this.orderDetails();
+            //this.computePoints();
+
+            this.orderDetails();
+        } else {
+            // add points of all details
+            this.points = this.details.reduce((sum, detail) => sum + detail.value, 0);
+            this.value = this.points;
+            this.result = formatResult(this.value, this.event_resultType);            
+        }
     }
 
     orderDetails(): void {
@@ -82,7 +90,7 @@ class Result extends BaseData {
             if (a.trynum == b.trynum) {
                 return compareResult(this.event_resultType, b.value, a.value);
             } else {
-                return a.trynum - b.trynum;
+                return a.trynum.localeCompare(b.trynum);
             }
         });
     }
@@ -100,7 +108,7 @@ class ResultDetail extends BaseData {
 
     result_id:              number = 0;
 
-    trynum:                 number = 0;
+    trynum:                 string = '';
 
     best:                   boolean = false;
 
@@ -117,7 +125,7 @@ class ResultDetail extends BaseData {
         this.result_id = result_id;
     }
 
-    setPerformance(trynum: number, value: number, result: string, wind: string): void {
+    setPerformance(trynum: string, value: number, result: string, wind: string): void {
         this.trynum = trynum;
         this.value = value;
         this.result = result;
